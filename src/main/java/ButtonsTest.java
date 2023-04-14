@@ -2,10 +2,7 @@ import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class ButtonsTest {
@@ -15,6 +12,7 @@ public class ButtonsTest {
     @BeforeAll
     public static void beforeAll() {
         driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1366, 768));
     }
 
     @AfterAll
@@ -83,5 +81,47 @@ public class ButtonsTest {
 
         assertEquals("O botão 5 foi selecionado.", alertButton5.getText());
         alertButton5.accept();
+    }
+
+    @Test
+    public void testClickButtonByLivre() {
+        driver.get(URL);
+        driver.manage().window().maximize();
+        WebElement switchButton = driver.findElement(By.id("button6-switch"));
+        switchButton.click();
+
+        WebElement button6 = driver.findElement(By.id("button6"));
+        button6.click();
+
+        Alert alertButton6 = driver.switchTo().alert();
+
+        assertEquals("O botão 6 foi selecionado.", alertButton6.getText());
+        alertButton6.accept();
+    }
+
+    @Test
+    public void testClickButtonByLinkText() {
+        driver.get(URL);
+        WebElement link = driver.findElement(By.xpath("/html/body/div/div/div[1]/div[7]/div/div[2]/a"));
+        link.click();
+
+        Alert alertLink = driver.switchTo().alert();
+
+        assertEquals("O link 1 foi selecionado.", alertLink.getText());
+        alertLink.accept();
+    }
+
+    @Test
+    public void testClickButtonByPartialLinkText() {
+        driver.get(URL);
+        driver.manage().window().maximize();
+//        WebElement link = driver.findElement(By.partialLinkText("Link 2"));
+        WebElement link = driver.findElement(By.partialLinkText("2"));
+        link.click();
+
+        Alert alertLink = driver.switchTo().alert();
+
+        assertEquals("O link 2 foi selecionado.", alertLink.getText());
+        alertLink.accept();
     }
 }
